@@ -68,7 +68,7 @@ functions:
           cors:
             origin: '*'
   getProductsById:
-    handler: src/functions/getProductsById/handler.getProductsById
+    handler: src/functions/getProductById/handler.getProductById
     events:
       - http:
           path: products/{id}

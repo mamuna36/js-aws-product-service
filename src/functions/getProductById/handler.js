@@ -1,7 +1,7 @@
 'use strict'
 const mockProducts = require('../../../data/mockProducts.json')
 
-module.exports.getProductsById = async (event) => {
+module.exports.getProductById = async (event) => {
   const { id } = event.pathParameters
   const foundProduct = await mockProducts.find((product) => product.id === id)
   if (foundProduct) {
