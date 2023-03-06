@@ -11,12 +11,17 @@ module.exports.getProducts = async (event) => {
 
   if (result.Count === 0) {
     return {
-      statusCode: 404
+      statusCode: 404,
+      body: 'There are no products found'
     }
   }
 
   return {
     statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true
+    },
     body: JSON.stringify({
       total: result.Count,
       items: await result.Items.map((product) => {

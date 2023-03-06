@@ -2,15 +2,13 @@
 const AWS = require('aws-sdk')
 
 module.exports.getProductById = async (event) => {
-  const { productId } = event.pathParameters
+  const { id } = event.pathParameters
   const documentClient = new AWS.DynamoDB.DocumentClient()
-  const searchParams = {
-    TableName: process.env.DYNAMODB_PRODUCTS_TABLE,
-    Key: {
-      id: productId
-    }
-  }
-  const data = await documentClient.get(searchParams).promise()
+  var params = {}
+  params.TableName = process.env.DYNAMODB_PRODUCTS_TABLE
+  var key = { id: id }
+  params.Key = key
+  const data = await documentClient.get(params).promise()
   return {
     statusCode: 200,
     headers: {
