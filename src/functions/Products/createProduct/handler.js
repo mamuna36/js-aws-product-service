@@ -2,9 +2,9 @@
 const AWS = require('aws-sdk')
 
 module.exports.createProduct = async (event) => {
-  const { id, title, description, price } = JSON.parse(event.body)
+  const { id, title, description, price, count } = JSON.parse(event.body)
   const dynamoDb = new AWS.DynamoDB.DocumentClient()
-  const putParams = {
+  const productParams = {
     TableName: process.env.DYNAMODB_PRODUCTS_TABLE,
     Item: {
       id: id,
@@ -13,11 +13,17 @@ module.exports.createProduct = async (event) => {
       price: price
     }
   }
-  console.log(`Product: ${JSON.stringify(putParams)}`)
-  await dynamoDb.put(putParams).promise()
-
+  const stockParams = {
+    TableName: process.env.DYNAMODB_STOCKS_TABLE,
+    Item: {
+      id: id,
+      count: count
+    }
+  }
+  await dynamoDb.put(productParams).promise()
+  await dynamoDb.put(stockParams).promise()
   return {
     statusCode: 201,
-    body: JSON.stringify(putParams)
+    body: JSON.stringify({ productData: productParams, stockData: stockParams })
   }
 }
